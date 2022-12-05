@@ -107,18 +107,20 @@ def multiply_number_with_digit_in_base(base, number, digit):
 
 def divide_number_with_digit_in_base(base, number, digit):
     if base == 10:
-        return number * digit
+        return number // digit, number % digit
     if base == 16:
-        return convert_number_from_base_10_to_base_16(convert_number_from_base_16_to_base_10(number) //
-                                                      convert_number_from_base_16_to_base_10(digit)), \
-               convert_number_from_base_10_to_base_16(convert_number_from_base_16_to_base_10(number) %
-                                                      convert_number_from_base_16_to_base_10(digit))
-    return convert_number_from_base_10_to_base_different_from_16(
-        convert_number_from_base_different_from_16_to_base_10(number, base)
-        // convert_number_from_base_different_from_16_to_base_10(digit, base), base),\
-           convert_number_from_base_10_to_base_different_from_16(
-               convert_number_from_base_different_from_16_to_base_10(number, base),
-               convert_number_from_base_different_from_16_to_base_10(digit, base), base)
+        quotient = convert_number_from_base_10_to_base_16(convert_number_from_base_16_to_base_10(number) //
+                                                          convert_number_from_base_16_to_base_10(digit))
+        remainder = convert_number_from_base_10_to_base_16(convert_number_from_base_16_to_base_10(number) %
+                                                           convert_number_from_base_16_to_base_10(digit))
+    else:
+        quotient = convert_number_from_base_10_to_base_different_from_16(
+            convert_number_from_base_different_from_16_to_base_10(number, base) //
+            convert_number_from_base_different_from_16_to_base_10(digit, base), base)
+        remainder = convert_number_from_base_10_to_base_different_from_16(
+            convert_number_from_base_different_from_16_to_base_10(number, base) %
+            convert_number_from_base_different_from_16_to_base_10(digit, base), base)
+    return quotient, remainder
 
 
 def convert_number_from_base_2_to_destination_base(number, destination_base, correspondence_table_base_2, base_index):
@@ -135,6 +137,7 @@ def convert_number_from_base_2_to_destination_base(number, destination_base, cor
 def convert_number_from_base_power_of_2_to_base_2(number, source_base, correspondence_table_base_2, base_index):
     power = 0
     converted_number = 0
+    number = str(number)
     while number != '':
         for base_2_number, power_of_2_base_number in correspondence_table_base_2.items():
             if number[0] == str(power_of_2_base_number[base_index[source_base]]):
@@ -202,11 +205,7 @@ def convert_number_from_source_base_to_destination_base_successive_divisions(num
     converted_number = 0
     power = 0
     while number != 0:
-        number, residue = divide_number_with_digit_in_base(source_base, number, destination_base)
-        converted_number += residue * 10 ** power
+        number, remainder = divide_number_with_digit_in_base(source_base, number, destination_base)
+        converted_number += remainder * 10 ** power
         power += 1
     return converted_number
-
-
-print(convert_number_from_source_base_to_destination_base_substitution_method(1021, 6, 8))
-print(convert_number_from_source_base_to_destination_base_successive_divisions(1222, 6, 4))
