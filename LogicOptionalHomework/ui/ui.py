@@ -1,4 +1,5 @@
-import LogicOptionalHomework.functions.functions as function
+import LogicOptionalHomework.functions.conversions as conversion
+import LogicOptionalHomework.functions.operations as operation
 
 
 def find_command_type(command):
@@ -62,7 +63,7 @@ def execute_command_add(command_arguments):
         except (ValueError, IndexError):
             raise SyntaxError("Syntax error")
         print(f' {first_number} + {second_number} = '
-              f'{function.add_two_numbers_in_base(base, first_number, second_number)} (base {base})')
+              f'{operation.add_two_numbers_in_base(base, first_number, second_number)} (base {base})')
     else:
         raise SyntaxError('Too many arguments for your command')
 
@@ -80,7 +81,7 @@ def execute_command_subtract(command_arguments):
         except (ValueError, IndexError):
             raise SyntaxError("Syntax error")
         print(f' {first_number} - {second_number} = '
-              f'{function.subtract_two_numbers_in_base(base, first_number, second_number)} (base {base})')
+              f'{operation.subtract_two_numbers_in_base(base, first_number, second_number)} (base {base})')
     else:
         raise SyntaxError('Too many arguments for your command')
 
@@ -98,7 +99,7 @@ def execute_command_multiply(command_arguments):
         except (ValueError, IndexError):
             raise SyntaxError("Syntax error")
         print(f' {number} * {digit} = '
-              f'{function.multiply_number_with_digit_in_base(base, number, digit)} (base {base})')
+              f'{operation.multiply_number_with_digit_in_base(base, number, digit)} (base {base})')
     else:
         raise SyntaxError('Too many arguments for your command')
 
@@ -115,7 +116,7 @@ def execute_command_divide(command_arguments):
                 digit = int(command_arguments[2])
         except (ValueError, IndexError):
             raise SyntaxError("Syntax error")
-        quotient, remainder = function.divide_number_with_digit_in_base(base, number, digit)
+        quotient, remainder = operation.divide_number_with_digit_in_base(base, number, digit)
         print(f' {number} / {digit} = '
               f'{quotient} remainder {remainder} (base {base})')
     else:
@@ -128,18 +129,18 @@ def execute_command_convert(command_arguments):
             source_base = int(command_arguments[0])
             destination_base = int(command_arguments[1])
             if source_base == 16:
-                number = command_arguments[2]
+                number = command_arguments[2].upper()
             else:
                 number = int(command_arguments[2])
             if source_base and destination_base in (2, 4, 8, 16):
-                print(f'{number} converted from base {source_base} to {destination_base} is:'
-                  f'{function.conversion_number_from_source_base_to_destination_base_rapid_conversions(number, source_base, destination_base)}')
+                print(f'{number} converted from base {source_base} to {destination_base} is: '
+                      f'{conversion.conversion_number_from_source_base_to_destination_base_rapid_conversions(number, source_base, destination_base)}')
             elif source_base < destination_base:
-                print(f'{number} converted from base {source_base} to {destination_base} is:'
-                      f'{function.convert_number_from_source_base_to_destination_base_substitution_method(number, source_base, destination_base)}')
+                print(f'{number} converted from base {source_base} to {destination_base} is: '
+                      f'{conversion.convert_number_from_source_base_to_destination_base_substitution_method(number, source_base, destination_base)}')
             elif source_base > destination_base:
-                print(f'{number} converted from base {source_base} to {destination_base} is:'
-                      f'{function.convert_number_from_source_base_to_destination_base_successive_divisions(number, source_base, destination_base)}')
+                print(f'{number} converted from base {source_base} to {destination_base} is: '
+                      f'{conversion.convert_number_from_source_base_to_destination_base_successive_divisions(number, source_base, destination_base)}')
             else:
                 raise ValueError('Your source base is the same as the destination base')
         except (ValueError, IndexError):
